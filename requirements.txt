@@ -1,7 +1,27 @@
-Flask==2.0.1
-Flask-SQLAlchemy==3.0.0
-Flask-Login==0.5.0
-python-dotenv==0.19.0
-Werkzeug==2.0.1
-supabase
-httpx==0.27.0
+# Core
+Flask==2.3.2
+Flask-SQLAlchemy==3.0.3
+Flask-Migrate==4.0.4
+python-dotenv==1.0.0
+
+# Database
+sqlalchemy==1.4.46
+psycopg2-binary==2.9.6  # PostgreSQL için (isteğe bağlı)
+
+# Supabase Integration
+supabase==1.0.3
+gotrue==0.2.2  # Supabase auth için
+postgrest-py==0.10.7  # Supabase Realtime için
+
+# File Uploads & Processing
+werkzeug==2.3.6
+python-magic==0.4.27  # Dosya türü tespiti için
+
+# Security
+itsdangerous==2.1.2
+flask-admin==1.6.1
+
+# Additional Utilities
+uuid==1.30  # UUID oluşturma
+python-dateutil==2.8.2  # Tarih işlemleri
+zipfile36==0.1.3  # ZIP arşivleme
