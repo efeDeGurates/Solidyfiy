@@ -7,7 +7,7 @@ import tempfile
 from datetime import timedelta, datetime
 import uuid
 from itsdangerous import URLSafeTimedSerializer
-from search import GelişmişArama
+from my_flask_app.search import GelişmişArama
 import zipfile
 import io
 from flask import jsonify ,send_file
