@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='forum.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='logonew.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="glass-nav">
+        <div class="nav-brand">
+            <img src="{{ url_for('static', filename='logo.png') }}" style="height: 40px; vertical-align: middle;"> Solidyfıy
+        </div>
+        <div class="nav-links">
+            <a href="/"><i class="fas fa-home"></i> Home</a>
+            {% if 'user' in session %}
+                <a href="/forum"><i class="fas fa-comments"></i> Forum</a>
+                <a href="/frc">FRC</a>
+                <a href="/upload"><i class="fas fa-upload"></i> Upload</a>
+                <a href="/profile"><i class="fas fa-user"></i> Profile</a>
+            {% else %}
+                <a href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a href="/register"><i class="fas fa-user-plus"></i> Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="forum-container">
+        <section class="new-post">
+            <h2>Ask a New Question</h2>
+            <form action="{{ url_for('new_forum_post') }}" method="post">
+                <input type="text" name="title" placeholder="Title" required>
+                <textarea name="content" placeholder="Write your question..." required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+
+        <section class="search-bar">
+            <form method="get" action="{{ url_for('forum_home') }}">
+                <input type="text" name="q" placeholder="Search by title or content..." value="{{ request.args.get('q', '') }}">
+                <button type="submit">Search</button>
+            </form>
+        </section>
+
+        <section class="forum-posts">
+            <h2>Forum Questions</h2>
+            {% for post in posts %}
+                <div class="post">
+                    <h3>{{ post.title }}</h3>
+                    <p>{{ post.content }}</p>
+                    <small>{{ post.user.username }} | {{ post.created_at.strftime('%d.%m.%Y') }}</small>
+
+                    <div class="replies">
+                        {% for reply in post.replies %}
+                            <div class="reply">
+                                <p>{{ reply.content }}</p>
+                                <small>{{ reply.user.username }} | {{ reply.created_at.strftime('%d.%m.%Y') }}</small>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    {% if session.get("user") %}
+                        <form action="{{ url_for('reply_to_post', post_id=post.id) }}" method="post" class="reply-form">
+                            <textarea name="content" placeholder="Your answer..." required></textarea>
+                            <button type="submit">Reply</button>
+                        </form>
+                    {% else %}
+                        <p>To reply, please <a href="{{ url_for('login') }}">log in</a>.</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </section>
+
+        {% if pagination %}
+        <section class="pagination">
+            {% if pagination.has_prev %}
+                <a href="{{ url_for('forum_home', page=pagination.prev_num, q=request.args.get('q', '')) }}">« Previous</a>
+            {% endif %}
+
+            {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                {% if page_num %}
+                    {% if page_num == pagination.page %}
+                        <strong>{{ page_num }}</strong>
+                    {% else %}
+                        <a href="{{ url_for('forum_home', page=page_num, q=request.args.get('q', '')) }}">{{ page_num }}</a>
+                    {% endif %}
+                {% else %}
+                    ...
+                {% endif %}
+            {% endfor %}
+
+            {% if pagination.has_next %}
+                <a href="{{ url_for('forum_home', page=pagination.next_num, q=request.args.get('q', '')) }}">Next »</a>
+            {% endif %}
+        </section>
+        {% endif %}
+    </main>
+</body>
+</html>

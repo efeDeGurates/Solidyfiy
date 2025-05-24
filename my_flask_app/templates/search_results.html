@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>"{{ query }}" Search Results | Solidyfıy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='search.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='logonew.png') }}">
+</head>
+<body>
+    <nav class="glass-nav">
+        <div class="nav-brand">
+            <img src="{{ url_for('static', filename='logo.png') }}" style="height: 40px; vertical-align: middle;"> Solidyfıy
+        </div>
+        
+        <div class="search-container">
+            <form action="{{ url_for('search') }}" method="get">
+                <div class="search-bar">
+                    <input type="text" name="q" placeholder="Search model..." value="{{ query }}">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="nav-links">
+            <a href="/profile"><i class="fas fa-user"></i> Profile</a>
+            <a href="#"><i class="fas fa-comments"></i> Forum</a>
+            <a href="/upload"><i class="fas fa-upload"></i> Upload</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="search-header">
+            <h1 class="page-title">Search results for "{{ query }}"</h1>
+            <div class="result-count">
+                {% if projects or models %}
+                    {{ projects|length + models|length }} results found
+                {% endif %}
+            </div>
+        </div>
+        
+        {% if projects or models %}
+            <div class="search-results">
+                {% if projects %}
+                    <section class="result-section">
+                        <h2><i class="fas fa-project-diagram"></i> Projects ({{ projects|length }})</h2>
+                        <div class="projects-grid">
+                            {% for project in projects %}
+                            <div class="project-card">
+                                <a href="{{ url_for('project_detail', project_id=project.id) }}">
+                                    {% if project.cover_image %}
+                                        <div class="project-cover">
+                                            <img src="{{ SUPABASE_URL }}/storage/v1/object/public/covers/{{ project.cover_image }}" alt="{{ project.title }}">
+                                        </div>
+                                    {% else %}
+                                        <div class="project-cover">
+                                            <div class="cover-placeholder">
+                                                <i class="fas fa-cube"></i>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    <div class="project-info">
+                                        <h3>{{ project.title }}</h3>
+                                        <div class="project-meta">
+                                            <span><i class="fas fa-user"></i> {{ project.user.username }}</span>
+                                            <span><i class="far fa-calendar-alt"></i> {{ project.created_at.strftime('%d.%m.%Y') }}</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </section>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-search fa-3x"></i>
+                <h3>No results found for "{{ query }}"</h3>
+                <p>Try different keywords</p>
+                <a href="/upload" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Create New Project
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

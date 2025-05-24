@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }} | Forum Post</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='forum.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='logonew.png') }}">
+</head>
+<body>
+    <nav class="glass-nav">
+        <div class="nav-brand">
+            <img src="{{ url_for('static', filename='logo.png') }}" style="height: 40px; vertical-align: middle;"> Solidyfıy
+        </div>
+        <div class="nav-links">
+            <a href="/"><i class="fas fa-home"></i> Home</a>
+            <a href="/forum"><i class="fas fa-comments"></i> Forum</a>
+            <a href="/profile"><i class="fas fa-user"></i> Profile</a>
+        </div>
+    </nav>
+
+    <main class="forum-container">
+        <section class="forum-post-detail">
+            <h1>{{ post.title }}</h1>
+            <p>{{ post.content }}</p>
+            <small>Posted by: {{ post.user.username }} | {{ post.created_at.strftime('%d.%m.%Y') }}</small>
+        </section>
+
+        <section class="forum-replies">
+            <h2>Replies</h2>
+            {% if post.replies %}
+                {% for reply in post.replies %}
+                    <div class="reply">
+                        <p>{{ reply.content }}</p>
+                        <small>{{ reply.user.username }} | {{ reply.created_at.strftime('%d.%m.%Y') }}</small>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No replies yet.</p>
+            {% endif %}
+        </section>
+
+        {% if session.get('user') %}
+            <section class="reply-form">
+                <form action="{{ url_for('reply_to_post', post_id=post.id) }}" method="post">
+                    <textarea name="content" placeholder="Write your reply..." required></textarea>
+                    <button type="submit">Reply</button>
+                </form>
+            </section>
+        {% else %}
+            <p>To reply, please <a href="{{ url_for('login') }}">log in</a>.</p>
+        {% endif %}
+    </main>
+</body>
+</html>

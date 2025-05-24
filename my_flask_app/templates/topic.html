@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head><title>{{ topic.title }}</title></head>
+<body>
+    <h1>{{ topic.title }}</h1>
+    <a href="{{ url_for('index') }}">← Return Back</a>
+
+    <ul>
+        {% for msg in topic.messages %}
+            <li>{{ msg.content }} <small>({{ msg.created_at.strftime('%Y-%m-%d %H:%M') }})</small></li>
+        {% endfor %}
+    </ul>
+
+    <form method="POST">
+        <textarea name="content" required></textarea><br>
+        <button type="submit">Send</button>
+    </form>
+</body>
+</html>

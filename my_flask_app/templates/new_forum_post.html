@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Question</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='forum.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='logonew.png') }}">
+</head>
+<body>
+    <h1>Ask a New Question</h1>
+    <form action="{{ url_for('new_forum_post') }}" method="post">
+        <input type="text" name="title" placeholder="Title" required><br>
+        <textarea name="content" placeholder="Write your question..." required></textarea><br>
+        <button type="submit">Submit</button>
+    </form>
+    <p><a href="{{ url_for('forum_home') }}">Back to Forum</a></p>
+</body>
+</html>

@@ -1,0 +1,172 @@
+:root {
+  --primary-color: rgb(33, 79, 20);
+  --primary-light: rgba(33, 79, 20, 0.8);
+  --primary-dark: rgb(25, 60, 15);
+  --light-color: #ffffff;
+  --dark-color: #000000;
+  --gray-color: #6c757d;
+  --card-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  --bg-color: #f5f5f5;
+  --nav-bg: rgb(33, 79, 20);
+  --search-bg: #eeeeee;
+  --card-bg: #ffffff;
+  --transition: all 0.3s ease;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--dark-color);
+  line-height: 1.6;
+}
+
+.glass-nav {
+  background: var(--nav-bg);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  padding: 12px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+.nav-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--light-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 12px;
+}
+
+.nav-links a {
+  color: var(--light-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-links a:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.nav-links a:active {
+  background: rgba(255,255,255,0.3);
+}
+
+.forum-container {
+  max-width: 800px;
+  margin: 100px auto 40px auto;
+  padding: 0 20px;
+}
+
+.new-post, .forum-posts {
+  background: var(--card-bg);
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.new-post h2, .forum-posts h2 {
+  margin-top: 0;
+  color: var(--primary-color);
+}
+
+form input[type="text"],
+form textarea {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 10px;
+  background-color: var(--search-bg);
+  border: 1px solid var(--gray-color);
+  color: var(--dark-color);
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+form button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+form button:hover {
+  background-color: var(--primary-dark);
+}
+
+.post {
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--gray-color);
+  padding-bottom: 20px;
+}
+
+.post h3 {
+  color: var(--primary-color);
+}
+
+.post p {
+  margin: 10px 0;
+  color: var(--dark-color);
+}
+
+.post small {
+  font-size: 0.8rem;
+  color: var(--gray-color);
+}
+
+.replies {
+  margin-top: 10px;
+  padding-left: 20px;
+  border-left: 2px solid var(--primary-dark);
+}
+
+.reply {
+  margin-bottom: 12px;
+  padding: 10px;
+  background: var(--search-bg);
+  border-radius: 6px;
+}
+
+.reply p {
+  margin: 0 0 5px 0;
+  color: var(--dark-color);
+}
+
+.reply small {
+  font-size: 0.8rem;
+  color: var(--gray-color);
+}
+
+.reply-form textarea {
+  margin-top: 10px;
+}
+
+.pagination a{
+  text-decoration: none;
+}

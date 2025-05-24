@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Models | Solidyfıy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='upload.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='logonew.png') }}">
+</head>
+<body>
+    <nav class="glass-nav">
+        <div class="nav-brand">
+            <img src="{{ url_for('static', filename='logo.png') }}" style="height: 40px; vertical-align: middle;"> Solidyfıy
+        </div>
+        <div class="nav-links">
+            <a href="/"><i class="fas fa-home"></i> Home</a>
+            <a href="/forum"><i class="fas fa-comments"></i> Forum</a>
+            <a href="/frc">FRC</a>
+            <a href="/upload" class="active"><i class="fas fa-upload"></i> Upload</a>
+            <a href="/profile"><i class="fas fa-user"></i> Profile</a>
+        </div>
+    </nav>
+
+    <div class="form-container">
+        <div class="upload-card">
+            <h1><i class="fas fa-cloud-upload-alt"></i> Upload Model</h1>
+            
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="file"><i class="fas fa-file-export"></i> 3D Model Files (STL)</label>
+                    <div class="file-upload">
+                        <input type="file" name="file" id="file" required multiple accept=".stl">
+                        <label for="file" class="upload-btn">
+                            <i class="fas fa-folder-open"></i> Choose Files
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="cover"><i class="fas fa-image"></i> Cover Photo</label>
+                    <div class="file-upload">
+                        <input type="file" name="cover" id="cover" accept="image/*" required>
+                        <label for="cover" class="upload-btn">
+                            <i class="fas fa-camera"></i> Choose Image
+                        </label>
+                    </div>
+                </div>
+
+                <div class="project-type"> 
+                    <label for="type">Your Project Type</label>
+                    <select name="type" id="type" required>
+                        <option value="Normal" selected>Normal Project</option>
+                        <option value="FRC">FRC Project</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="name"><i class="fas fa-heading"></i> Project Name</label>
+                    <input type="text" id="name" name="name" maxlength="20" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description"><i class="fas fa-align-left"></i> Description</label>
+                    <textarea id="description" name="description" rows="4" maxlength="500" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="license"><i class="fas fa-balance-scale"></i> Select License</label>
+                    <select name="license" id="license" required>
+                        <option value="cc-by">Creative Commons Attribution (CC BY)</option>
+                        <option value="cc-by-nc">Creative Commons Attribution-NonCommercial (CC BY-NC)</option>
+                        <option value="cc-by-sa">Creative Commons ShareAlike (CC BY-SA)</option>
+                        <option value="cc-by-nd">Creative Commons NoDerivatives (CC BY-ND)</option>
+                        <option value="commercial">Commercial License</option>
+                        <option value="public-domain">Public Domain</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-upload"></i> Start Upload
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

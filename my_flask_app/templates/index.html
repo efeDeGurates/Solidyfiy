@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Solidyfıy | Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='logonew.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body>
+    <nav class="glass-nav">
+        <div class="nav-brand">
+            <img src="{{ url_for('static', filename='logo.png') }}" style="height: 40px; vertical-align: middle;"> Solidyfıy
+        </div>
+
+        <div class="search-container">
+            <form action="/search" method="get">
+                <div class="search-bar">
+                    <input type="text" name="q" placeholder="Search models..." />
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
+        </div>
+
+        <div class="nav-links">
+            <a href="/"><i class="fas fa-home"></i> Home</a>
+            {% if 'user' in session %}
+                <a href="/forum"><i class="fas fa-comments"></i> Forum</a>
+                <a href="/frc">FRC</a>
+                <a href="/upload"><i class="fas fa-upload"></i> Upload</a>
+                <a href="/profile"><i class="fas fa-user"></i> Profile</a>
+            {% else %}
+                <a href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a href="/register"><i class="fas fa-user-plus"></i> Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="projects-grid">
+            {% if projects %}
+                {% for project in projects %}
+                <div class="project-card">
+                    <a href="{{ url_for('project_detail', project_id=project.id) }}">
+                        {% if project.cover_image %}
+                            <div class="project-cover">
+                                <img src="{{ SUPABASE_URL }}/storage/v1/object/public/covers/{{ project.cover_image }}" alt="{{ project.title }}" loading="lazy" />
+                            </div>
+                        {% else %}
+                            <div class="project-cover">
+                                <div class="cover-placeholder">
+                                    <i class="fas fa-cube"></i>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="project-info">
+                            <h3>{{ project.title }}</h3>
+                            <div class="project-meta">
+                                <span><i class="fas fa-user"></i> {{ project.user.username }}</span>
+                                <span><i class="far fa-calendar-alt"></i> {{ project.created_at.strftime('%d.%m.%Y') }}</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-folder-open fa-3x"></i>
+                    <p>No projects found yet</p>
+                    <a href="/upload" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Create your first project
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+
+        {% if pagination.pages > 1 %}
+        <div class="pagination">
+            {% if pagination.has_prev %}
+                <a href="{{ url_for('index', page=pagination.prev_num) }}" class="page-link">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </a>
+            {% endif %}
+
+            {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=3) %}
+                {% if page_num %}
+                    {% if page_num == pagination.page %}
+                        <span class="page-link active">{{ page_num }}</span>
+                    {% else %}
+                        <a href="{{ url_for('index', page=page_num) }}" class="page-link">{{ page_num }}</a>
+                    {% endif %}
+                {% else %}
+                    <span class="ellipsis">...</span>
+                {% endif %}
+            {% endfor %}
+
+            {% if pagination.has_next %}
+                <a href="{{ url_for('index', page=pagination.next_num) }}" class="page-link">
+                    Next <i class="fas fa-chevron-right"></i>
+                </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

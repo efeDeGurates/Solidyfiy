@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ post.title }} - Forum</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='forum.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='logonew.png') }}">
+</head>
+<body>
+    <nav class="glass-nav">
+        <div class="nav-brand">
+            <img src="{{ url_for('static', filename='logo.png') }}" style="height: 40px; vertical-align: middle;"> Solidyfıy
+        </div>
+        <div class="nav-links">
+            <a href="/"><i class="fas fa-home"></i> Home</a>
+            <a href="/forum-page"><i class="fas fa-comments"></i> Forum</a>
+            {% if session.get('user') %}
+                <a href="/upload"><i class="fas fa-upload"></i> Upload</a>
+                <a href="/profile"><i class="fas fa-user"></i> Profile</a>
+            {% else %}
+                <a href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a href="/register"><i class="fas fa-user-plus"></i> Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="forum-container">
+        <div class="forum-post">
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.content }}</p>
+            <small>Asked by: {{ post.user.username }} - {{ post.created_at.strftime('%Y-%m-%d') }}</small>
+        </div>
+
+        <hr>
+        <h3>Replies</h3>
+        {% for reply in post.replies %}
+            <div class="forum-reply">
+                <p>{{ reply.content }}</p>
+                <small>{{ reply.user.username }} - {{ reply.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+            </div>
+        {% else %}
+            <p>No replies yet.</p>
+        {% endfor %}
+
+        {% if session.get("user") %}
+            <hr>
+            <h4>Write a Reply</h4>
+            <form method="POST" class="forum-form">
+                <textarea name="content" rows="4" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        {% else %}
+            <p>To write a reply, please <a href="{{ url_for('login') }}">log in</a>.</p>
+        {% endif %}
+    </main>
+</body>
+</html>

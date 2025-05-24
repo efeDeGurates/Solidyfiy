@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Privacy Policy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='logonew.png') }}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to right, #fdfbfb, #ebedee);
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            background: white;
+            padding: 50px;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #222;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.2em;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            margin-top: 35px;
+            font-size: 1.4em;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        p, li {
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Privacy Policy</h1>
+
+        <p>This Privacy Policy explains how we collect, use, disclose, and protect your information when you use our website and services. By using our site, you agree to the terms outlined in this policy.</p>
+
+        <h2>Information We Collect</h2>
+        <ul>
+            <li>Personal details (such as username, email address, password)</li>
+            <li>Uploaded content and files</li>
+            <li>Usage data (IP address, browser type, device info, access times)</li>
+        </ul>
+
+        <h2>How We Use Your Information</h2>
+        <ul>
+            <li>To provide and maintain our services</li>
+            <li>To personalize user experience</li>
+            <li>To communicate with you about updates or issues</li>
+            <li>To comply with legal obligations</li>
+        </ul>
+
+        <h2>Legal Bases for Processing (GDPR)</h2>
+        <p>We process personal data based on the following legal grounds:</p>
+        <ul>
+            <li>Your consent</li>
+            <li>Performance of a contract</li>
+            <li>Compliance with legal obligations</li>
+            <li>Legitimate interests</li>
+        </ul>
+
+        <h2>California Privacy Rights (CCPA)</h2>
+        <p>California residents may request access to or deletion of their personal information. We do not sell your personal information.</p>
+
+        <h2>Cookies</h2>
+        <p>We use cookies to improve your browsing experience. You can disable cookies in your browser settings if you prefer.</p>
+
+        <h2>Data Retention</h2>
+        <p>We retain your data as long as your account is active or as needed to provide services and meet legal obligations.</p>
+
+        <h2>Data Security</h2>
+        <p>We use encryption and security protocols to protect your personal data from unauthorized access or disclosure.</p>
+
+        <h2>Third-Party Sharing</h2>
+        <p>We do not sell your data. We may share data with service providers only as necessary to operate our services.</p>
+
+        <h2>Your Rights</h2>
+        <p>You have the right to access, correct, delete, or restrict your personal data. You can also object to processing or request data portability where applicable.</p>
+
+        <h2>Changes to This Policy</h2>
+        <p>This Privacy Policy may be updated from time to time. We will notify you of significant changes via our website.</p>
+
+        <h2>Contact</h2>
+        <p>If you have any questions or concerns, please contact us at: <strong>{{ support_email }}</strong></p>
+
+        <div class="footer">
+            <a href="{{ url_for('index') }}">Return to Home</a>
+        </div>
+    </div>
+</body>
+</html>

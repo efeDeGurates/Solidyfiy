@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ project.title }} | Solidyfıy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='model.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='logonew.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-RXf+QSDCUQs6Q0zK3pFjg2u5+5kFjYB5+5n5v5ZL5IqRt3+q5FJd0jk9+zV1pC9ZWf1TzD4L0J5zF6cXZP1v5A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/STLLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="nav-brand">
+            <a href="/"><img src="{{ url_for('static', filename='logo.png') }}" style="height: 40px; vertical-align: middle;"> Solidyfıy</a>
+        </div>
+        <div class="nav-links">
+            <a href="/"><i class="fas fa-home"></i> Home</a>
+            {% if 'user' in session %}
+                <a href="/forum"><i class="fas fa-comments"></i> Forum</a>
+                <a href="/frc">FRC</a>
+                <a href="/upload"><i class="fas fa-upload"></i> Upload</a>
+                <a href="/profile"><i class="fas fa-user"></i> Profile</a>
+            {% else %}
+                <a href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a href="/register"><i class="fas fa-user-plus"></i> Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title">{{ project.title }}</h1>
+
+        <div class="model-content">
+            <div class="model-viewer-container">
+                <div id="main-viewer" data-url="{{ SUPABASE_URL }}/storage/v1/object/public/uploads/{{ project.models[0].filename }}">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                        <p>Loading model...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="model-sidebar">
+                <div class="model-thumbnails">
+                    <h3><i class="fas fa-cubes"></i> Models</h3>
+                    <div class="thumbnail-list">
+                        {% for model in project.models %}
+                        <div class="thumbnail-item" data-url="{{ SUPABASE_URL }}/storage/v1/object/public/uploads/{{ model.filename }}">
+                            <div class="thumbnail-viewer"></div>
+                            <div class="thumbnail-info">
+                                <span class="model-name"></span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="model-actions">
+                    <button id="downloadBtn" class="action-btn download-btn" data-project-id="{{ project.id }}">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                    <form action="{{ url_for('report') }}" method="POST" class="report-form">
+                        <input type="hidden" name="project_url" value="{{ request.url }}">
+                        <input type="hidden" name="project_id" value="{{ project.id }}">
+                        <button type="submit" class="submit-button">Report</button>
+                    </form>
+                    <button id="like-btn" class="action-btn" data-liked="{{ current_user in project.likes|map(attribute='user')|list }}">
+                        <i class="fas fa-heart"></i>
+                        <span id="like-count">{{ project.likes|length }}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-sections">
+            <div class="description-section">
+                <h2><i class="fas fa-info-circle"></i> Description</h2>
+                <div class="description-content">
+                    {{ project.description if project.description else "No description available" }}
+                </div>
+            </div>
+
+            <div class="license-section">
+                <h2><i class="fas fa-file-contract"></i> License</h2>
+                <ul class="license-list">
+                    {% set unique_licenses = [] %}
+                    {% for model in project.models %}
+                        {% if model.license not in unique_licenses %}
+                            <li>{{ model.license|default("License not specified") }}</li>
+                            {% set _ = unique_licenses.append(model.license) %}
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    // === MODEL VIEWER ===
+    function setupViewer(container, url) {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        container.innerHTML = '';
+        container.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+
+        const light1 = new THREE.DirectionalLight(0xffffff, 0.7);
+        light1.position.set(1, 1, 1);
+        scene.add(light1);
+
+        const light2 = new THREE.DirectionalLight(0xffffff, 0.6);
+        light2.position.set(-1, 1, 1);
+        scene.add(light2);
+
+        const light3 = new THREE.DirectionalLight(0xffffff, 0.5);
+        light3.position.set(1, -1, -1);
+        scene.add(light3);
+
+        const light4 = new THREE.DirectionalLight(0xffffff, 0.5);
+        light4.position.set(-1, -1, -1);
+        scene.add(light4);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+        scene.add(ambientLight);
+
+
+
+        const loader = new THREE.STLLoader();
+        loader.load(url, function(geometry) {
+            const material = new THREE.MeshStandardMaterial({ color: 0xaaaaaa, metalness: 0.5, roughness: 0.5 });
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            geometry.computeBoundingBox();
+            const center = new THREE.Vector3();
+            geometry.boundingBox.getCenter(center);
+            mesh.position.sub(center);
+
+            const size = geometry.boundingBox.getSize(new THREE.Vector3());
+            const maxDim = Math.max(size.x, size.y, size.z);
+            camera.position.z = maxDim * 1.5;
+            controls.update();
+
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+        });
+
+        return { scene, camera, renderer, controls };
+    }
+
+    // === Load main model ===
+    const mainViewer = document.getElementById('main-viewer');
+    const mainUrl = mainViewer.getAttribute('data-url');
+    setupViewer(mainViewer, mainUrl);
+
+    // === Load thumbnails ===
+    document.querySelectorAll('.thumbnail-item').forEach(item => {
+        const url = item.getAttribute('data-url');
+        const viewer = item.querySelector('.thumbnail-viewer');
+        setupViewer(viewer, url);
+
+        item.addEventListener('click', () => {
+            setupViewer(mainViewer, url);
+        });
+    });
+
+    // === Download button ===
+    const downloadBtn = document.getElementById('downloadBtn');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', function() {
+            const projectId = this.getAttribute('data-project-id');
+            window.location.href = `/download_project/${projectId}`;
+        });
+    }
+
+    // === Like button ===
+    const likeBtn = document.getElementById('like-btn');
+    if (likeBtn) {
+        const likeIcon = likeBtn.querySelector('i');
+        const likeCount = document.getElementById('like-count');
+
+        likeBtn.addEventListener('click', function() {
+            fetch("/like", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    project_id: "{{ project.id }}"
+                })
+            })
+            .then(res => {
+                if (res.status === 401) {
+                    alert("You must be logged in to like.");
+                    return null;
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (!data) return;
+
+                const currentCount = parseInt(likeCount.textContent);
+                if (data.liked) {
+                    likeIcon.style.color = 'red';
+                    likeCount.textContent = currentCount + 1;
+                } else {
+                    likeIcon.style.color = 'gray';
+                    likeCount.textContent = currentCount - 1;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("An error occurred.");
+            });
+        });
+    }
+});
+</script>
+
+
+</body>
+</html>

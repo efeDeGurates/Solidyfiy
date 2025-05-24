@@ -1,0 +1,136 @@
+.search-header {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.result-count {
+    color: #6c757d; /* Dark gray instead of light gray */
+    font-size: 0.9rem;
+}
+
+.search-results {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.result-section h2 {
+    color: rgb(33, 79, 20); /* Updated to green */
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+}
+
+.models-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.model-card {
+    background: #ffffff; /* Solid white background */
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #e0e0e0; /* Light gray border */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.model-card:hover {
+    transform: translateY(-5px);
+    background: #ffffff;
+    border-color: rgb(33, 79, 20); /* Green border on hover */
+    box-shadow: 0 8px 20px rgba(33, 79, 20, 0.1);
+}
+
+.model-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.model-header h3 {
+    margin: 0;
+    color: #333333; /* Dark text */
+    font-size: 1.2rem;
+}
+
+.license-badge {
+    background: rgba(33, 79, 20, 0.1); /* Light green background */
+    color: rgb(33, 79, 20); /* Green text */
+    padding: 0.3rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.model-meta {
+    color: #6c757d; /* Dark gray text */
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.model-meta p {
+    margin: 0.3rem 0;
+}
+
+.model-meta a {
+    color: rgb(33, 79, 20); /* Green links */
+    text-decoration: none;
+}
+
+.model-meta i {
+    margin-right: 0.5rem;
+    width: 1rem;
+    text-align: center;
+    color: rgb(33, 79, 20); /* Green icons */
+}
+
+.model-directive {
+    padding: 0.8rem;
+    background: #f5f5f5; /* Light gray background */
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #333333; /* Dark text */
+    border-left: 3px solid rgb(33, 79, 20); /* Green accent */
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #6c757d; /* Dark gray */
+}
+
+.empty-state i {
+    margin-bottom: 1.5rem;
+    color: #e0e0e0; /* Light gray */
+    font-size: 3rem;
+}
+
+.empty-state h3 {
+    color: #333333; /* Dark text */
+    margin-bottom: 0.5rem;
+}
+
+.btn-primary {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.8rem 1.5rem;
+    background: rgb(33, 79, 20); /* Green button */
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: rgb(25, 60, 15); /* Darker green on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(33, 79, 20, 0.2);
+}
