@@ -5,23 +5,28 @@ Flask-Migrate==4.0.4
 python-dotenv==1.0.0
 
 # Database
-sqlalchemy==1.4.46
-psycopg2-binary==2.9.6  # PostgreSQL için (isteğe bağlı)
+sqlalchemy==2.0.23  # Güncel sürüm
+psycopg2-binary==2.9.9  # Güncel sürüm
 
 # Supabase Integration
-supabase==1.0.3
-gotrue==0.2.2  # Supabase auth için
-postgrest-py==0.10.7  # Supabase Realtime için
+supabase==2.3.1  # EN ÖNEMLİ DEĞİŞİKLİK
+gotrue==0.2.2
+postgrest-py==0.10.7
+storage-py==0.7.0  # StorageException için gerekli
 
 # File Uploads & Processing
-werkzeug==2.3.6
-python-magic==0.4.27  # Dosya türü tespiti için
+werkzeug==2.3.7  # Güncel sürüm
+python-magic-bin==0.4.14; sys_platform == 'win32'  # Windows için
+python-magic==0.4.27; sys_platform != 'win32'  # Diğer işletim sistemleri
 
 # Security
 itsdangerous==2.1.2
 flask-admin==1.6.1
 
 # Additional Utilities
-uuid==1.30  # UUID oluşturma
-python-dateutil==2.8.2  # Tarih işlemleri
-zipfile36==0.1.3  # ZIP arşivleme
+uuid==1.30
+python-dateutil==2.8.2
+zipfile36==0.1.3
+
+# Production
+gunicorn==21.2.0  # Render için zorunlu
