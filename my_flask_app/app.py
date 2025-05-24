@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, flash, url_for, session, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
-from supabase.client import create_client, SupabaseClient
+from supabase.client import create_client
 import os
 import tempfile
 from datetime import timedelta, datetime
