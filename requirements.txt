@@ -1,12 +1,7 @@
+# requirements.txt (TAM İÇERİK)
+Flask==2.3.2  # 3.x DEĞİL!
 supabase==2.3.1
-Flask==2.3.2  # 3.x sürümlerinden kaçının
-Flask-SQLAlchemy==3.0.3
-Flask-Migrate==4.0.4
-python-dotenv==1.0.0
+storage-py==0.7.0
 gunicorn==20.1.0
 psycopg2-binary==2.9.9
-werkzeug==2.3.7  # Flask 2.x ile uyumlu
-supabase==2.3.1  # Veya en son stabil sürüm
-storage-py==0.7.0  # StorageException için zorunlu
-gotrue==0.2.2  # Auth işlemleri için
-postgrest-py==0.10.7  # Realtime özellikleri için
+python-dotenv==1.0.0

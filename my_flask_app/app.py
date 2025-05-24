@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, redirect, flash, url_for, ses
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 from supabase.client import create_client
+from storage3.utils import StorageException
 import os
 import tempfile
 from datetime import timedelta, datetime
@@ -210,7 +211,7 @@ def upload():
                 supabase_client.storage.from_('covers').upload(cover_path, open(tmp.name, 'rb'))
                 new_project.cover_image = cover_path
                 db.session.commit()
-            except Exception as e:
+            except StorageException as e:
                 flash(f"Supabase cover upload hatası: {e}", "error")
             finally:
                 os.unlink(tmp.name)
@@ -242,7 +243,7 @@ def upload():
                 db.session.add(new_model)
                 db.session.commit()
                 flash(f"{secure_name} başarıyla yüklendi!", "success")
-            except Exception as e:
+            except StorageException as e:
                 flash(f"Supabase model upload hatası: {e}", "error")
                 db.session.rollback()
             finally:
@@ -278,7 +279,7 @@ def delete_project(project_id):
         db.session.commit()
 
         flash("Proje ve bağlı tüm dosyalar başarıyla silindi.", "success")
-    except Exception as e:
+    except StorageException as e:
         flash(f"Supabase error: {str(e)}", "error")
         db.session.rollback()
     except Exception as e:
@@ -324,7 +325,7 @@ def profile():
                 db.session.delete(model)
                 db.session.commit()
                 flash("Model başarıyla silindi.", "success")
-            except Exception as e:
+            except StorageException as e:
                 flash(f"Supabase Storage hatası: {str(e)}", "error")
             except Exception as e:
                 flash(f"Model silinirken hata oluştu: {str(e)}", "error")
